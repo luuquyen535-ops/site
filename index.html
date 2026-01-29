@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khảo Sát Mua Sắm Shopee</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ee4d2d 0%, #ff6b4a 50%, #ff8a65 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 20px 60px rgba(238, 77, 45, 0.15);
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .checkbox-custom:checked + label {
+            background: linear-gradient(135deg, #ee4d2d, #ff6b4a);
+            color: white;
+            border-color: #ee4d2d;
+            transform: scale(1.02);
+        }
+        
+        .radio-custom:checked + label {
+            background: linear-gradient(135deg, #ee4d2d, #ff6b4a);
+            color: white;
+            border-color: #ee4d2d;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #ee4d2d, #ff6b4a, #ffab91);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(238, 77, 45, 0.2);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(238, 77, 45, 0.4);
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: confetti-fall 3s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            animation: blob 7s infinite;
+        }
+        
+        @keyframes blob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
+    <!-- Decorative Blobs -->
+    <div class="blob w-72 h-72 bg-orange-300 top-0 left-0 -z-10"></div>
+    <div class="blob w-96 h-96 bg-red-200 bottom-0 right-0 -z-10"></div>
+    
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-4 left-10 text-6xl">🛒</div>
+            <div class="absolute top-8 right-20 text-4xl">🛍️</div>
+            <div class="absolute bottom-4 left-1/4 text-5xl">📦</div>
+            <div class="absolute bottom-2 right-1/3 text-3xl">💳</div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex items-center justify-center gap-4">
+                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg float-animation">
+                    <span class="text-3xl">🛒</span>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-3xl md:text-4xl font-bold">Khảo Sát Mua Sắm Shopee</h1>
+                    <p class="text-orange-100 mt-2">Chia sẻ trải nghiệm - Nhận ưu đãi hấp dẫn</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-medium text-gray-600">Tiến độ:</span>
+                <div class="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progressBar" class="progress-bar h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <span id="progressText" class="text-sm font-bold text-orange-500">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10">
+        <form id="surveyForm" class="max-w-4xl mx-auto space-y-8">
+            
+            <!-- Section 1: Thông tin cá nhân -->
+            <section class="bg-white rounded-3xl p-8 card-shadow slide-in">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Thông Tin Cá Nhân</h2>
+                        <p class="text-gray-500">Giúp chúng tôi hiểu bạn hơn</p>
+                    </div>
+                </div>
+                
+                <!-- Giới tính -->
+                <div class="mb-8">
+                    <label class="block text-lg font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-venus-mars text-orange-500 mr-2"></i>Giới tính của bạn
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <input type="radio" name="gender" id="male" value="male" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="male" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-4xl mb-2">👨</span>
+                            <span class="font-medium">Nam</span>
+                        </label>
+                        
+                        <input type="radio" name="gender" id="female" value="female" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="female" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-4xl mb-2">👩</span>
+                            <span class="font-medium">Nữ</span>
+                        </label>
+                        
+                        <input type="radio" name="gender" id="other" value="other" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="other" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-4xl mb-2">🧑</span>
+                            <span class="font-medium">Khác</span>
+                        </label>
+                        
+                        <input type="radio" name="gender" id="noAnswer" value="noAnswer" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="noAnswer" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-4xl mb-2">🤐</span>
+                            <span class="font-medium">Không tiết lộ</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Độ tuổi -->
+                <div>
+                    <label class="block text-lg font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-birthday-cake text-orange-500 mr-2"></i>Độ tuổi của bạn
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <input type="radio" name="age" id="age1" value="under18" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="age1" class="text-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-2xl block mb-1">👶</span>
+                            <span class="font-medium text-sm">Dưới 18</span>
+                        </label>
+                        
+                        <input type="radio" name="age" id="age2" value="18-24" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="age2" class="text-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-2xl block mb-1">🧑‍🎓</span>
+                            <span class="font-medium text-sm">18 - 24</span>
+                        </label>
+                        
+                        <input type="radio" name="age" id="age3" value="25-34" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="age3" class="text-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-2xl block mb-1">👨‍💼</span>
+                            <span class="font-medium text-sm">25 - 34</span>
+                        </label>
+                        
+                        <input type="radio" name="age" id="age4" value="35-44" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="age4" class="text-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-2xl block mb-1">👨‍👩‍👧</span>
+                            <span class="font-medium text-sm">35 - 44</span>
+                        </label>
+                        
+                        <input type="radio" name="age" id="age5" value="over45" class="radio-custom hidden" onchange="updateProgress()">
+                        <label for="age5" class="text-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                            <span class="text-2xl block mb-1">👴</span>
+                            <span class="font-medium text-sm">Trên 45</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Mặt hàng mua nhiều -->
+            <section class="bg-white rounded-3xl p-8 card-shadow slide-in" style="animation-delay: 0.1s">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Mặt Hàng Mua Nhiều</h2>
+                        <p class="text-gray-500">Chọn những danh mục bạn thường xuyên mua sắm</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <input type="checkbox" id="fashion" value="fashion" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="fashion" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">👗</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Thời trang</span>
+                        <span class="text-xs text-gray-400 mt-1">Quần áo, giày dép</span>
+                    </label>
+                    
+                    <input type="checkbox" id="electronics" value="electronics" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="electronics" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">📱</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Điện tử</span>
+                        <span class="text-xs text-gray-400 mt-1">Điện thoại, laptop</span>
+                    </label>
+                    
+                    <input type="checkbox" id="beauty" value="beauty" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="beauty" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">💄</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Làm đẹp</span>
+                        <span class="text-xs text-gray-400 mt-1">Mỹ phẩm, skincare</span>
+                    </label>
+                    
+                    <input type="checkbox" id="home" value="home" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="home" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🏠</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Nhà cửa</span>
+                        <span class="text-xs text-gray-400 mt-1">Nội thất, decor</span>
+                    </label>
+                    
+                    <input type="checkbox" id="food" value="food" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="food" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🍜</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Thực phẩm</span>
+                        <span class="text-xs text-gray-400 mt-1">Đồ ăn, đồ uống</span>
+                    </label>
+                    
+                    <input type="checkbox" id="baby" value="baby" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="baby" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🍼</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Mẹ & Bé</span>
+                        <span class="text-xs text-gray-400 mt-1">Đồ trẻ em</span>
+                    </label>
+                    
+                    <input type="checkbox" id="sports" value="sports" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="sports" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">⚽</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Thể thao</span>
+                        <span class="text-xs text-gray-400 mt-1">Dụng cụ, quần áo</span>
+                    </label>
+                    
+                    <input type="checkbox" id="books" value="books" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="books" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">📚</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Sách</span>
+                        <span class="text-xs text-gray-400 mt-1">Sách, văn phòng phẩm</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Section 3: Mặt hàng ít mua -->
+            <section class="bg-white rounded-3xl p-8 card-shadow slide-in" style="animation-delay: 0.2s">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Mặt Hàng Ít Mua</h2>
+                        <p class="text-gray-500">Những danh mục bạn hiếm khi mua sắm</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <input type="checkbox" id="lessJewelry" value="jewelry" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessJewelry" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">💍</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Trang sức</span>
+                        <span class="text-xs text-gray-400 mt-1">Nhẫn, vòng, dây chuyền</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessFurniture" value="furniture" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessFurniture" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🛋️</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Nội thất lớn</span>
+                        <span class="text-xs text-gray-400 mt-1">Sofa, bàn ghế</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessLuxury" value="luxury" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessLuxury" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-rose-100 to-rose-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">👜</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Hàng hiệu</span>
+                        <span class="text-xs text-gray-400 mt-1">Túi xách cao cấp</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessPet" value="pet" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessPet" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🐕</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Thú cưng</span>
+                        <span class="text-xs text-gray-400 mt-1">Đồ cho pet</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessCar" value="car" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessCar" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🚗</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Ô tô - Xe máy</span>
+                        <span class="text-xs text-gray-400 mt-1">Phụ kiện xe</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessGarden" value="garden" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessGarden" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-lime-100 to-lime-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🌱</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Làm vườn</span>
+                        <span class="text-xs text-gray-400 mt-1">Cây cảnh, dụng cụ</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessArt" value="art" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessArt" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-fuchsia-100 to-fuchsia-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🎨</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Nghệ thuật</span>
+                        <span class="text-xs text-gray-400 mt-1">Tranh, đồ handmade</span>
+                    </label>
+                    
+                    <input type="checkbox" id="lessMusical" value="musical" class="checkbox-custom hidden" onchange="updateProgress()">
+                    <label for="lessMusical" class="category-card flex flex-col items-center p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300">
+                        <div class="w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-full flex items-center justify-center mb-3">
+                            <span class="text-3xl">🎸</span>
+                        </div>
+                        <span class="font-semibold text-gray-700">Nhạc cụ</span>
+                        <span class="text-xs text-gray-400 mt-1">Đàn, guitar, piano</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Section 4: Mức giá -->
+            <section class="bg-white rounded-3xl p-8 card-shadow slide-in" style="animation-delay: 0.3s">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Mức Giá Thường Chi</h2>
+                        <p class="text-gray-500">Ngân sách trung bình cho mỗi đơn hàng</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="radio" name="price" id="price1" value="under100k" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="price1" class="flex items-center gap-4 p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <div class="w-14 h-14 bg-gradient-to-br from-green-400 to-green-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-gray-800">Dưới 100.000đ</span>
+                            <p class="text-sm text-gray-500">Mua sắm tiết kiệm</p>
+                        </div>
+                        <span class="ml-auto text-3xl">💰</span>
+                    </label>
+                    
+                    <input type="radio" name="price" id="price2" value="100k-300k" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="price2" class="flex items-center gap-4 p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-gray-800">100.000đ - 300.000đ</span>
+                            <p class="text-sm text-gray-500">Mua sắm vừa phải</p>
+                        </div>
+                        <span class="ml-auto text-3xl">💵</span>
+                    </label>
+                    
+                    <input type="radio" name="price" id="price3" value="300k-500k" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="price3" class="flex items-center gap-4 p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-gray-800">300.000đ - 500.000đ</span>
+                            <p class="text-sm text-gray-500">Mua sắm thoải mái</p>
+                        </div>
+                        <span class="ml-auto text-3xl">💳</span>
+                    </label>
+                    
+                    <input type="radio" name="price" id="price4" value="500k-1m" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="price4" class="flex items-center gap-4 p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <div class="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-gray-800">500.000đ - 1.000.000đ</span>
+                            <p class="text-sm text-gray-500">Mua sắm cao cấp</p>
+                        </div>
+                        <span class="ml-auto text-3xl">💎</span>
+                    </label>
+                    
+                    <input type="radio" name="price" id="price5" value="over1m" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="price5" class="flex items-center gap-4 p-5 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50 md:col-span-2">
+                        <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg text-gray-800">Trên 1.000.000đ</span>
+                            <p class="text-sm text-gray-500">Không giới hạn ngân sách</p>
+                        </div>
+                        <span class="ml-auto text-3xl">👑</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Section 5: Tần suất mua sắm -->
+            <section class="bg-white rounded-3xl p-8 card-shadow slide-in" style="animation-delay: 0.4s">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Tần Suất Mua Sắm</h2>
+                        <p class="text-gray-500">Bạn mua sắm trên Shopee thường xuyên như thế nào?</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input type="radio" name="frequency" id="freq1" value="daily" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="freq1" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <span class="text-4xl mb-3">🔥</span>
+                        <span class="font-bold text-gray-700">Hàng ngày</span>
+                        <span class="text-xs text-gray-400 mt-1">Nghiện mua sắm</span>
+                    </label>
+                    
+                    <input type="radio" name="frequency" id="freq2" value="weekly" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="freq2" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <span class="text-4xl mb-3">📅</span>
+                        <span class="font-bold text-gray-700">Hàng tuần</span>
+                        <span class="text-xs text-gray-400 mt-1">Thường xuyên</span>
+                    </label>
+                    
+                    <input type="radio" name="frequency" id="freq3" value="monthly" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="freq3" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <span class="text-4xl mb-3">📆</span>
+                        <span class="font-bold text-gray-700">Hàng tháng</span>
+                        <span class="text-xs text-gray-400 mt-1">Bình thường</span>
+                    </label>
+                    
+                    <input type="radio" name="frequency" id="freq4" value="rarely" class="radio-custom hidden" onchange="updateProgress()">
+                    <label for="freq4" class="flex flex-col items-center p-6 border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:border-orange-300 hover:bg-orange-50">
+                        <span class="text-4xl mb-3">🐢</span>
+                        <span class="font-bold text-gray-700">Thỉnh thoảng</span>
+                        <span class="text-xs text-gray-400 mt-1">Khi cần thiết</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Submit Button -->
+            <div class="text-center pt-6">
+                <button type="submit" class="btn-submit gradient-bg text-white font-bold text-xl px-16 py-5 rounded-full shadow-xl transition-all duration-300 inline-flex items-center gap-3">
+                    <span>Gửi Khảo Sát</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                <p class="text-gray-400 mt-4 text-sm">
+                    <i class="fas fa-lock mr-1"></i>
+                    Thông tin của bạn được bảo mật tuyệt đối
+                </p>
+            </div>
+        </form>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-3xl p-10 max-w-md mx-4 text-center transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
+            <div class="w-24 h-24 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6 pulse-animation">
+                <i class="fas fa-check text-5xl text-white"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800 mb-4">Cảm ơn bạn!</h3>
+            <p class="text-gray-600 mb-6">Khảo sát của bạn đã được ghi nhận thành công. Chúng tôi sẽ sử dụng thông tin này để cải thiện trải nghiệm mua sắm của bạn.</p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="closeModal()" class="px-8 py-3 bg-gray-100 text-gray-700 rounded-full font-semibold hover:bg-gray-200 transition-all">
+                    Đóng
+                </button>
+                <button onclick="resetForm()" class="px-8 py-3 gradient-bg text-white rounded-full font-semibold hover:shadow-lg transition-all">
+                    Làm lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="text-3xl">🛒</span>
+                <span class="text-xl font-bold">Shopee Survey</span>
+            </div>
+            <p class="text-orange-100">© 2024 Khảo sát mua sắm trực tuyến. Tất cả quyền được bảo lưu.</p>
+            <div class="flex justify-center gap-6 mt-4">
+                <a href="#" class="text-white hover:text-orange-200 transition-colors"><i class="fab fa-facebook text-2xl"></i></a>
+                <a href="#" class="text-white hover:text-orange-200 transition-colors"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-white hover:text-orange-200 transition-colors"><i class="fab fa-tiktok text-2xl"></i></a>
+                <a href="#" class="text-white hover:text-orange-200 transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function updateProgress() {
+            const totalQuestions = 5;
+            let answered = 0;
+            
+            // Check gender
+            if (document.querySelector('input[name="gender"]:checked')) answered++;
+            
+            // Check age
+            if (document.querySelector('input[name="age"]:checked')) answered++;
+            
+            // Check frequent items (at least one)
+            const frequentItems = document.querySelectorAll('#fashion:checked, #electronics:checked, #beauty:checked, #home:checked, #food:checked, #baby:checked, #sports:checked, #books:checked');
+            if (frequentItems.length > 0) answered++;
+            
+            // Check price
+            if (document.querySelector('input[name="price"]:checked')) answered++;
+            
+            // Check frequency
+            if (document.querySelector('input[name="frequency"]:checked')) answered++;
+            
+            const progress = Math.round((answered / totalQuestions) * 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress + '%';
+        }
+        
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const age = document.querySelector('input[name="age"]:checked');
+            const price = document.querySelector('input[name="price"]:checked');
+            const frequency = document.querySelector('input[name="frequency"]:checked');
+            
+            if (!gender || !age || !price || !frequency) {
+                alert('Vui lòng hoàn thành tất cả các câu hỏi!');
+                return;
+            }
+            
+            // Show success modal with confetti
+            showSuccessModal();
+            createConfetti();
+        });
+        
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 100);
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('modalContent');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+        
+        function resetForm() {
+            document.getElementById('surveyForm').reset();
+            updateProgress();
+            closeModal();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function createConfetti() {
+            const colors = ['#ee4d2d', '#ff6b4a', '#ffab91', '#ffd54f', '#4caf50', '#2196f3', '#e91e63'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+        
+        // Add smooth scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
