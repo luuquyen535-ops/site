@@ -1,12 +1,643 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lưu Thị Kim Quyên - Portfolio Ngành Chăn Nuôi & Thú Y</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lưu Thị Kim Quyên - Chuyên Gia Chăn Nuôi & Thú Y</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4A6741; /* Olive Green */
+            --primary-light: #87A96B;
+            --secondary-color: #2C3E50;
+            --bg-light: #F9FBFA;
+            --white: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 15px 0;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f0f4ef 0%, #ffffff 100%);
+            padding-top: 80px;
+            position: relative;
+        }
+
+        #hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30%;
+            height: 80%;
+            background: url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&q=80&w=800') no-repeat center;
+            background-size: cover;
+            opacity: 0.05;
+            mask-image: linear-gradient(to left, black, transparent);
+        }
+
+        .hero-content {
+            max-width: 700px;
+            z-index: 1;
+        }
+
+        .hero-tagline {
+            display: inline-block;
+            background: rgba(74, 103, 65, 0.1);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--white);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary-color);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .contact-info-list {
+            list-style: none;
+        }
+
+        .contact-info-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-info-list i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        /* Education Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--primary-light);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--white);
+            border: 4px solid var(--primary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+
+        .right::after { left: -10px; }
+
+        .content {
+            padding: 20px;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .content h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .content span {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .skill-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .skill-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .skill-list li {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-list li i {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+            color: var(--primary-light);
+        }
+
+        /* Experience Section (Special styling for freshers) */
+        .exp-box {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .exp-box h2 {
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .exp-box p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary-light);
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item::after { left: 21px; }
+            .right { left: 0; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">Lưu Thị Kim Quyên</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Trang chủ</a></li>
+                <li><a href="#about">Giới thiệu</a></li>
+                <li><a href="#education">Học vấn</a></li>
+                <li><a href="#skills">Chuyên môn</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-tagline">Kỹ sư Chăn nuôi | Học viên Cao học Thú y</span>
+                <h1>LƯU THỊ KIM QUYÊN</h1>
+                <p>Nâng tầm nền nông nghiệp bền vững thông qua kiến thức chuyên sâu về dinh dưỡng, quản lý sức khỏe động vật và quy trình sản xuất thực phẩm an toàn.</p>
+                <div class="btn-group">
+                    <a href="#contact" class="btn btn-primary">Liên hệ ngay</a>
+                    <a href="#education" class="btn btn-outline">Tìm hiểu thêm</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Tóm tắt chuyên môn</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <h3>Khát vọng & Sứ mệnh</h3>
+                    <p>Tôi là một kỹ sư tốt nghiệp ngành Chăn nuôi tại Đại học Cần Thơ, hiện đang tiếp tục theo đuổi học vị Thạc sĩ Thú y để kiện toàn hóa kiến thức chuyên môn. Với nền tảng vững chắc về kỹ thuật chăn nuôi, dinh dưỡng và quản lý sức khỏe gia súc, gia cầm, tôi luôn hướng tới việc tối ưu hóa quy trình sản xuất nhằm nâng cao năng suất và chất lượng sản phẩm động vật.</p>
+                    <p>Mặc dù là sinh viên mới tốt nghiệp, tôi mang trong mình tinh thần cầu tiến, nhiệt huyết và khả năng chuyển hóa các lý thuyết khoa học vào thực tiễn sản xuất một cách linh hoạt và hiệu quả.</p>
+                </div>
+                <div class="contact-card reveal">
+                    <ul class="contact-info-list">
+                        <li><i class="fas fa-map-marker-alt"></i> Tổ 71, Khu vực 10, P. Hưng Phú, TP. Cần Thơ</li>
+                        <li><i class="fas fa-phone-alt"></i> 0823797646</li>
+                        <li><i class="fas fa-envelope"></i> luuquyen535@gmail.com</li>
+                        <li><i class="fas fa-graduation-cap"></i> Kỹ sư Chăn nuôi (Đại học Cần Thơ)</li>
+                        <li><i class="fas fa-language"></i> Tiếng Anh: Chứng chỉ B1 (VSTEP)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" style="background-color: #fff;">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Lộ trình Học vấn</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item left reveal">
+                    <div class="content">
+                        <span>2025 - Hiện tại</span>
+                        <h3>Thạc sĩ Thú y</h3>
+                        <p>Đại học Cần Thơ (CTU)</p>
+                        <p><small>Nâng cao kiến thức về dịch tễ học, chẩn đoán và điều trị bệnh động vật chuyên sâu.</small></p>
+                    </div>
+                </div>
+                <div class="timeline-item right reveal">
+                    <div class="content">
+                        <span>2021 - 2025</span>
+                        <h3>Cử nhân Chăn nuôi</h3>
+                        <p>Đại học Cần Thơ (CTU)</p>
+                        <p><small>Tốt nghiệp loại Khá/Giỏi. Tập trung vào kỹ thuật nuôi dưỡng, dinh dưỡng và giống vật nuôi.</small></p>
+                    </div>
+                </div>
+                <div class="timeline-item left reveal">
+                    <div class="content">
+                        <span>Chứng chỉ</span>
+                        <h3>Tiếng Anh B1</h3>
+                        <p>Trung tâm Ngoại ngữ - Đại học Cần Thơ</p>
+                        <p><small>Khả năng nghiên cứu tài liệu chuyên ngành bằng tiếng nước ngoài.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Năng lực & Kỹ năng</h2>
+            </div>
+            <div class="skills-grid">
+                <!-- Skill 1 -->
+                <div class="skill-card reveal">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Kỹ thuật & Thú y</h3>
+                    <ul class="skill-list">
+                        <li><i class="fas fa-check-circle"></i> Quản lý sức khỏe vật nuôi</li>
+                        <li><i class="fas fa-check-circle"></i> Quy trình phòng bệnh</li>
+                        <li><i class="fas fa-check-circle"></i> Chăm sóc & Điều trị thú y</li>
+                        <li><i class="fas fa-check-circle"></i> Dinh dưỡng động vật</li>
+                    </ul>
+                </div>
+                <!-- Skill 2 -->
+                <div class="skill-card reveal">
+                    <i class="fas fa-microscope"></i>
+                    <h3>Sản xuất & Công nghệ</h3>
+                    <ul class="skill-list">
+                        <li><i class="fas fa-check-circle"></i> Tối ưu hóa quy trình nuôi</li>
+                        <li><i class="fas fa-check-circle"></i> Kiểm soát chất lượng thực phẩm</li>
+                        <li><i class="fas fa-check-circle"></i> Áp dụng khoa học sinh học</li>
+                        <li><i class="fas fa-check-circle"></i> Quản lý trang trại hiện đại</li>
+                    </ul>
+                </div>
+                <!-- Skill 3 -->
+                <div class="skill-card reveal">
+                    <i class="fas fa-users"></i>
+                    <h3>Kỹ năng bổ trợ</h3>
+                    <ul class="skill-list">
+                        <li><i class="fas fa-check-circle"></i> Giao tiếp & Thuyết phục</li>
+                        <li><i class="fas fa-check-circle"></i> Làm việc nhóm hiệu quả</li>
+                        <li><i class="fas fa-check-circle"></i> Giải quyết vấn đề</li>
+                        <li><i class="fas fa-check-circle"></i> Tư duy phân tích</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commitment Section -->
+    <section id="experience" class="container">
+        <div class="exp-box reveal">
+            <h2>Định hướng Phát triển</h2>
+            <p>Là một nhân tố trẻ trong ngành Nông nghiệp, tôi cam kết mang lại giá trị thực thông qua sự tận tâm và kiến thức bài bản. Tôi tìm kiếm cơ hội được thử thách trong môi trường chuyên nghiệp, sẵn sàng cống hiến lâu dài và đóng góp vào sự phát triển bền vững của doanh nghiệp trong lĩnh vực Chăn nuôi – Thú y.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Kết nối với tôi</h2>
+            </div>
+            <div style="text-align: center;" class="reveal">
+                <p style="margin-bottom: 30px;">Bạn đang tìm kiếm một ứng viên năng động với nền tảng chuyên môn vững chắc?</p>
+                <div class="btn-group" style="justify-content: center;">
+                    <a href="mailto:luuquyen535@gmail.com" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi Email</a>
+                    <a href="tel:0823797646" class="btn btn-outline"><i class="fas fa-phone-alt"></i> Gọi điện</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p>&copy; 2024 - Thiết kế bởi LƯU THỊ KIM QUYÊN</p>
+            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.6;">Chuyên gia ngành Chăn nuôi - Thú y</p>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal elements on scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+
+        // Initial check for elements in view
+        reveal();
+
+        // Smooth scroll for nav links (already handled by CSS but for older browsers)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple Navbar shadow on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                nav.style.boxShadow = '0 2px 15px rgba(0,0,0,0.05)';
+            }
+        });
+    </script>
+</body>
 </html>
